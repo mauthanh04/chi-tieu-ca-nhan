@@ -1,8 +1,271 @@
 {
-  "users": [],
-  "accounts": [],
-  "categories": [],
-  "transactions": [],
-  "budgets": [],
-  "settings": []
+  "users": [
+    {
+      "id": "usr_demo_123456",
+      "name": "Demo User",
+      "email": "demo@example.com",
+      "password_hash": "$2b$10$jsyey0KwJhN.2iHOuCYtAeTkQ3Bo6n8q9sWvZ.U9sBx6FNLCKIE0m",
+      "created_at": "2026-08-09T15:15:21.579Z",
+      "updated_at": "2026-08-09T15:15:21.579Z"
+    }
+  ],
+  "accounts": [
+    {
+      "id": "acc_mb_bank",
+      "user_id": "usr_demo_123456",
+      "name": "MB Bank",
+      "type": "nganhang",
+      "balance": 10000000,
+      "created_at": "2026-08-09T15:15:21.579Z",
+      "updated_at": "2026-08-09T15:15:21.579Z"
+    },
+    {
+      "id": "acc_cash",
+      "user_id": "usr_demo_123456",
+      "name": "Tiền mặt",
+      "type": "tienmat",
+      "balance": 2000000,
+      "created_at": "2026-08-09T15:15:21.579Z",
+      "updated_at": "2026-08-09T15:15:21.579Z"
+    }
+  ],
+  "categories": [
+    {
+      "id": "cat_demo_1_chi",
+      "user_id": "usr_demo_123456",
+      "name": "Ăn uống",
+      "type": "chi",
+      "created_at": "2026-08-09T15:15:21.579Z"
+    },
+    {
+      "id": "cat_demo_2_chi",
+      "user_id": "usr_demo_123456",
+      "name": "Mua sắm",
+      "type": "chi",
+      "created_at": "2026-08-09T15:15:21.579Z"
+    },
+    {
+      "id": "cat_demo_3_chi",
+      "user_id": "usr_demo_123456",
+      "name": "Đi lại",
+      "type": "chi",
+      "created_at": "2026-08-09T15:15:21.579Z"
+    },
+    {
+      "id": "cat_demo_4_chi",
+      "user_id": "usr_demo_123456",
+      "name": "Giải trí",
+      "type": "chi",
+      "created_at": "2026-08-09T15:15:21.579Z"
+    },
+    {
+      "id": "cat_demo_5_chi",
+      "user_id": "usr_demo_123456",
+      "name": "Hóa đơn",
+      "type": "chi",
+      "created_at": "2026-08-09T15:15:21.579Z"
+    },
+    {
+      "id": "cat_demo_6_chi",
+      "user_id": "usr_demo_123456",
+      "name": "Sức khỏe",
+      "type": "chi",
+      "created_at": "2026-08-09T15:15:21.579Z"
+    },
+    {
+      "id": "cat_demo_7_chi",
+      "user_id": "usr_demo_123456",
+      "name": "Học tập",
+      "type": "chi",
+      "created_at": "2026-08-09T15:15:21.579Z"
+    },
+    {
+      "id": "cat_demo_8_chi",
+      "user_id": "usr_demo_123456",
+      "name": "Nhà cửa",
+      "type": "chi",
+      "created_at": "2026-08-09T15:15:21.579Z"
+    },
+    {
+      "id": "cat_demo_9_chi",
+      "user_id": "usr_demo_123456",
+      "name": "Khác",
+      "type": "chi",
+      "created_at": "2026-08-09T15:15:21.579Z"
+    },
+    {
+      "id": "cat_demo_10_thu",
+      "user_id": "usr_demo_123456",
+      "name": "Lương",
+      "type": "thu",
+      "created_at": "2026-08-09T15:15:21.579Z"
+    },
+    {
+      "id": "cat_demo_11_thu",
+      "user_id": "usr_demo_123456",
+      "name": "Bán hàng",
+      "type": "thu",
+      "created_at": "2026-08-09T15:15:21.579Z"
+    },
+    {
+      "id": "cat_demo_12_thu",
+      "user_id": "usr_demo_123456",
+      "name": "Thưởng",
+      "type": "thu",
+      "created_at": "2026-08-09T15:15:21.579Z"
+    },
+    {
+      "id": "cat_demo_13_thu",
+      "user_id": "usr_demo_123456",
+      "name": "Khác",
+      "type": "thu",
+      "created_at": "2026-08-09T15:15:21.579Z"
+    }
+  ],
+  "transactions": [
+    {
+      "id": "tx_demo_1",
+      "user_id": "usr_demo_123456",
+      "account_id": "acc_mb_bank",
+      "category_id": "cat_demo_10_thu",
+      "type": "thu",
+      "amount": 15000000,
+      "transaction_date": "2026-08-04",
+      "content": "Nhận lương tháng này",
+      "note": "Chuyển khoản công ty",
+      "created_at": "2026-08-09T15:15:21.579Z",
+      "updated_at": "2026-08-09T15:15:21.579Z"
+    },
+    {
+      "id": "tx_demo_2",
+      "user_id": "usr_demo_123456",
+      "account_id": "acc_mb_bank",
+      "category_id": "cat_demo_11_thu",
+      "type": "thu",
+      "amount": 500000,
+      "transaction_date": "2026-08-09",
+      "content": "Bán hàng online",
+      "note": "Khách chuyển khoản",
+      "created_at": "2026-08-09T15:15:21.579Z",
+      "updated_at": "2026-08-09T15:15:21.579Z"
+    },
+    {
+      "id": "tx_demo_3",
+      "user_id": "usr_demo_123456",
+      "account_id": "acc_cash",
+      "category_id": "cat_demo_1_chi",
+      "type": "chi",
+      "amount": 45000,
+      "transaction_date": "2026-08-09",
+      "content": "Ăn trưa",
+      "note": "Cơm tấm",
+      "created_at": "2026-08-09T15:15:21.579Z",
+      "updated_at": "2026-08-09T15:15:21.579Z"
+    },
+    {
+      "id": "tx_demo_4",
+      "user_id": "usr_demo_123456",
+      "account_id": "acc_cash",
+      "category_id": "cat_demo_1_chi",
+      "type": "chi",
+      "amount": 30000,
+      "transaction_date": "2026-08-09",
+      "content": "Cà phê sáng",
+      "note": "Highlands Coffee",
+      "created_at": "2026-08-09T15:15:21.579Z",
+      "updated_at": "2026-08-09T15:15:21.579Z"
+    },
+    {
+      "id": "tx_demo_5",
+      "user_id": "usr_demo_123456",
+      "account_id": "acc_cash",
+      "category_id": "cat_demo_3_chi",
+      "type": "chi",
+      "amount": 25000,
+      "transaction_date": "2026-08-09",
+      "content": "Xăng xe",
+      "note": "Đổ xăng A95",
+      "created_at": "2026-08-09T15:15:21.579Z",
+      "updated_at": "2026-08-09T15:15:21.579Z"
+    },
+    {
+      "id": "tx_demo_6",
+      "user_id": "usr_demo_123456",
+      "account_id": "acc_mb_bank",
+      "category_id": "cat_demo_2_chi",
+      "type": "chi",
+      "amount": 1200000,
+      "transaction_date": "2026-08-08",
+      "content": "Mua quần áo",
+      "note": "Áo sơ mi Uniqlo",
+      "created_at": "2026-08-09T15:15:21.579Z",
+      "updated_at": "2026-08-09T15:15:21.579Z"
+    },
+    {
+      "id": "tx_demo_7",
+      "user_id": "usr_demo_123456",
+      "account_id": "acc_mb_bank",
+      "category_id": "cat_demo_5_chi",
+      "type": "chi",
+      "amount": 850000,
+      "transaction_date": "2026-08-06",
+      "content": "Thanh toán tiền điện nước",
+      "note": "Hóa đơn tháng 8",
+      "created_at": "2026-08-09T15:15:21.579Z",
+      "updated_at": "2026-08-09T15:15:21.579Z"
+    }
+  ],
+  "budgets": [
+    {
+      "id": "bg_demo_1",
+      "user_id": "usr_demo_123456",
+      "category_id": "cat_demo_1_chi",
+      "month": 8,
+      "year": 2026,
+      "limit_amount": 3000000,
+      "created_at": "2026-08-09T15:15:21.579Z",
+      "updated_at": "2026-08-09T15:15:21.579Z"
+    },
+    {
+      "id": "bg_demo_2",
+      "user_id": "usr_demo_123456",
+      "category_id": "cat_demo_2_chi",
+      "month": 8,
+      "year": 2026,
+      "limit_amount": 2000000,
+      "created_at": "2026-08-09T15:15:21.579Z",
+      "updated_at": "2026-08-09T15:15:21.579Z"
+    },
+    {
+      "id": "bg_demo_3",
+      "user_id": "usr_demo_123456",
+      "category_id": "cat_demo_3_chi",
+      "month": 8,
+      "year": 2026,
+      "limit_amount": 1000000,
+      "created_at": "2026-08-09T15:15:21.579Z",
+      "updated_at": "2026-08-09T15:15:21.579Z"
+    },
+    {
+      "id": "bg_demo_4",
+      "user_id": "usr_demo_123456",
+      "category_id": "cat_demo_5_chi",
+      "month": 8,
+      "year": 2026,
+      "limit_amount": 1500000,
+      "created_at": "2026-08-09T15:15:21.579Z",
+      "updated_at": "2026-08-09T15:15:21.579Z"
+    }
+  ],
+  "settings": [
+    {
+      "id": "stg_demo_1",
+      "user_id": "usr_demo_123456",
+      "currency": "VNĐ",
+      "theme": "light",
+      "notifications_enabled": true,
+      "created_at": "2026-08-09T15:15:21.579Z",
+      "updated_at": "2026-08-09T15:15:21.579Z"
+    }
+  ]
 }

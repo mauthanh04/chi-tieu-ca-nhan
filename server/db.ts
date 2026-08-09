@@ -78,9 +78,6 @@ export interface DatabaseSchema {
 function findSeedDatabasePath(): string | null {
   const possiblePaths = [
     path.join(process.cwd(), 'database.json'),
-    path.join(__dirname, 'database.json'),
-    path.join(__dirname, '..', 'database.json'),
-    path.join(__dirname, '../..', 'database.json'),
     path.resolve('database.json'),
   ];
   for (const p of possiblePaths) {
