@@ -80,7 +80,19 @@ function getDbFilePath(): string {
     return process.env.DB_FILE_PATH;
   }
   if (process.env.VERCEL) {
-    return '/tmp/database.json';
+    const tmpPath = '/tmp/database.json';
+    // If /tmp/database.json doesn't exist yet, copy initial database.json if available
+    try {
+      if (!fs.existsSync(tmpPath)) {
+        const rootDbPath = path.join(process.cwd(), 'database.json');
+        if (fs.existsSync(rootDbPath)) {
+          fs.copyFileSync(rootDbPath, tmpPath);
+        }
+      }
+    } catch (e) {
+      console.warn('Could not copy initial database.json to /tmp:', e);
+    }
+    return tmpPath;
   }
   return path.join(process.cwd(), 'database.json');
 }
@@ -104,18 +116,9 @@ class JSONDatabase {
 
   private load() {
     try {
-      let fileToRead = activeDbFilePath;
-      const cwdDb = path.join(process.cwd(), 'database.json');
-      const tmpDb = '/tmp/database.json';
-
-      if (fs.existsSync(cwdDb)) {
-        fileToRead = cwdDb;
-      } else if (fs.existsSync(tmpDb)) {
-        fileToRead = tmpDb;
-      }
-
-      if (fs.existsSync(fileToRead)) {
-        const raw = fs.readFileSync(fileToRead, 'utf-8');
+      activeDbFilePath = getDbFilePath();
+      if (fs.existsSync(activeDbFilePath)) {
+        const raw = fs.readFileSync(activeDbFilePath, 'utf-8');
         const parsed = JSON.parse(raw);
         this.data = {
           users: parsed.users || [],
@@ -125,22 +128,45 @@ class JSONDatabase {
           budgets: parsed.budgets || [],
           settings: parsed.settings || [],
         };
+      } else {
+        // Fallback: check process.cwd() database.json
+        const cwdDb = path.join(process.cwd(), 'database.json');
+        if (fs.existsSync(cwdDb)) {
+          const raw = fs.readFileSync(cwdDb, 'utf-8');
+          const parsed = JSON.parse(raw);
+          this.data = {
+            users: parsed.users || [],
+            accounts: parsed.accounts || [],
+            categories: parsed.categories || [],
+            transactions: parsed.transactions || [],
+            budgets: parsed.budgets || [],
+            settings: parsed.settings || [],
+          };
+        }
       }
     } catch (err) {
-      console.error('Failed to load database.json, starting fresh', err);
+      console.error('Failed to load database file, keeping current state', err);
     }
   }
 
   public save() {
     try {
+      const dir = path.dirname(activeDbFilePath);
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
       fs.writeFileSync(activeDbFilePath, JSON.stringify(this.data, null, 2), 'utf-8');
     } catch (err) {
       console.warn(`Failed to save to ${activeDbFilePath}, attempting fallback to /tmp/database.json`, err);
       try {
         activeDbFilePath = '/tmp/database.json';
+        const tmpDir = path.dirname(activeDbFilePath);
+        if (!fs.existsSync(tmpDir)) {
+          fs.mkdirSync(tmpDir, { recursive: true });
+        }
         fs.writeFileSync(activeDbFilePath, JSON.stringify(this.data, null, 2), 'utf-8');
       } catch (fallbackErr) {
-        console.error('Failed to save database.json in fallback location', fallbackErr);
+        console.error('Failed to save database in fallback location', fallbackErr);
       }
     }
   }
