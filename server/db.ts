@@ -75,18 +75,35 @@ export interface DatabaseSchema {
   settings: Setting[];
 }
 
+function findSeedDatabasePath(): string | null {
+  const possiblePaths = [
+    path.join(process.cwd(), 'database.json'),
+    path.join(__dirname, 'database.json'),
+    path.join(__dirname, '..', 'database.json'),
+    path.join(__dirname, '../..', 'database.json'),
+    path.resolve('database.json'),
+  ];
+  for (const p of possiblePaths) {
+    try {
+      if (fs.existsSync(p)) {
+        return p;
+      }
+    } catch {}
+  }
+  return null;
+}
+
 function getDbFilePath(): string {
   if (process.env.DB_FILE_PATH) {
     return process.env.DB_FILE_PATH;
   }
-  if (process.env.VERCEL) {
+  if (process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME) {
     const tmpPath = '/tmp/database.json';
-    // If /tmp/database.json doesn't exist yet, copy initial database.json if available
     try {
       if (!fs.existsSync(tmpPath)) {
-        const rootDbPath = path.join(process.cwd(), 'database.json');
-        if (fs.existsSync(rootDbPath)) {
-          fs.copyFileSync(rootDbPath, tmpPath);
+        const seedPath = findSeedDatabasePath();
+        if (seedPath) {
+          fs.copyFileSync(seedPath, tmpPath);
         }
       }
     } catch (e) {
@@ -117,8 +134,18 @@ class JSONDatabase {
   private load() {
     try {
       activeDbFilePath = getDbFilePath();
+      
+      let raw: string | null = null;
       if (fs.existsSync(activeDbFilePath)) {
-        const raw = fs.readFileSync(activeDbFilePath, 'utf-8');
+        raw = fs.readFileSync(activeDbFilePath, 'utf-8');
+      } else {
+        const seedPath = findSeedDatabasePath();
+        if (seedPath) {
+          raw = fs.readFileSync(seedPath, 'utf-8');
+        }
+      }
+
+      if (raw) {
         const parsed = JSON.parse(raw);
         this.data = {
           users: parsed.users || [],
@@ -128,21 +155,6 @@ class JSONDatabase {
           budgets: parsed.budgets || [],
           settings: parsed.settings || [],
         };
-      } else {
-        // Fallback: check process.cwd() database.json
-        const cwdDb = path.join(process.cwd(), 'database.json');
-        if (fs.existsSync(cwdDb)) {
-          const raw = fs.readFileSync(cwdDb, 'utf-8');
-          const parsed = JSON.parse(raw);
-          this.data = {
-            users: parsed.users || [],
-            accounts: parsed.accounts || [],
-            categories: parsed.categories || [],
-            transactions: parsed.transactions || [],
-            budgets: parsed.budgets || [],
-            settings: parsed.settings || [],
-          };
-        }
       }
     } catch (err) {
       console.error('Failed to load database file, keeping current state', err);

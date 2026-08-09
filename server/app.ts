@@ -26,7 +26,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// REST API Routes
+// REST API Routes with /api prefix
 app.use('/api/auth', authRouter);
 app.use('/api/accounts', accountsRouter);
 app.use('/api/categories', categoriesRouter);
@@ -35,9 +35,25 @@ app.use('/api/budgets', budgetsRouter);
 app.use('/api/statistics', statisticsRouter);
 app.use('/api/settings', settingsRouter);
 
+// Duplicate mounts without /api prefix for Vercel rewrites flexibility
+app.use('/auth', authRouter);
+app.use('/accounts', accountsRouter);
+app.use('/categories', categoriesRouter);
+app.use('/transactions', transactionsRouter);
+app.use('/budgets', budgetsRouter);
+app.use('/statistics', statisticsRouter);
+app.use('/settings', settingsRouter);
+
 // Health check endpoint
-app.get('/api/health', (req, res) => {
+const healthHandler = (_req: express.Request, res: express.Response) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
+};
+app.get('/api/health', healthHandler);
+app.get('/health', healthHandler);
+
+// Fallback JSON 404 for missing API routes
+app.use('/api/*', (req, res) => {
+  res.status(404).json({ message: 'Không tìm thấy API route yêu cầu' });
 });
 
 // Global error handler to ensure JSON response
