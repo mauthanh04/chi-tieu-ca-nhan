@@ -40,4 +40,12 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+// Global error handler to ensure JSON response
+app.use((err: any, req: express.Request, res: express.Response, _next: express.NextFunction) => {
+  console.error('Unhandled server error:', err);
+  res.status(err.status || 500).json({
+    message: err.message || 'Lỗi hệ thống máy chủ',
+  });
+});
+
 export default app;

@@ -40,10 +40,21 @@ async function fetchAPI<T>(endpoint: string, options: RequestInit = {}): Promise
     headers,
   });
 
-  const data = await response.json();
+  let data: any;
+  const contentType = response.headers.get('content-type') || '';
+  if (contentType.includes('application/json')) {
+    try {
+      data = await response.json();
+    } catch {
+      data = null;
+    }
+  } else {
+    const text = await response.text();
+    data = { message: text || `Lỗi từ máy chủ (${response.status})` };
+  }
 
   if (!response.ok) {
-    throw new Error(data.message || 'Đã có lỗi xảy ra. Vui lòng thử lại.');
+    throw new Error(data?.message || `Lỗi máy chủ (${response.status})`);
   }
 
   return data as T;
